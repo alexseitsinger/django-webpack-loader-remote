@@ -4,37 +4,36 @@ import os
 import re
 from setuptools import setup, find_packages
 
-HERE = os.path.abspath(os.path.dirname(__file__))
-NAME = os.path.basename(HERE)
+PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
+PACKAGE_NAME = os.path.basename(PACKAGE_DIR)
 
 
-def read(*parts):
-    with open(os.path.join(HERE, *parts), "r", encoding="utf-8") as fp:
-        return fp.read()
+def read_file(*parts):
+    file_path = os.path.join(PACKAGE_DIR, *parts)
+    with open(file_path, "r", encoding="utf-8") as file:
+        return file.read()
 
 
-def find_version(*file_paths):
-    version_file = read(*file_paths)
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
-    if version_match:
-        return version_match.group(1)
-    raise RuntimeError("Unable to find version string.")
+def get_version():
+    match = re.search(
+        r"^__version__ = ['\"]([^'\"]*)['\"]",
+        read_file("src", PACKAGE_NAME, "__init__.py"),
+        re.M
+    )
+    if match:
+        return match.group(1)
+    raise RuntimeError("Unable to find version.")
 
 
 setup(
-    name=NAME,
-    version=find_version("src", NAME, "__init__.py"),
+    name=PACKAGE_NAME,
+    version=get_version(),
     description="Load webpack stats from a local or remote file",
-    long_description=read("README.md"),
+    long_description=read_file("README.md"),
     long_description_content_type="text/markdown",
-    url="https://github.com/alexseitsinger/{}".format(NAME),
+    url="https://github.com/alexseitsinger/{}".format(PACKAGE_NAME),
     author="Alex Seitsinger",
     author_email="contact@alexseitsinger.com",
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        'Framework :: Django',
-        "License :: OSI Approved :: BSD License",
-    ],
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["tests"]),
     license="BSD 2-Clause License",
