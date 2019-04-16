@@ -1,45 +1,43 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
 import os
 import re
+from setuptools import setup, find_packages
 
-from setuptools import setup
-
-
-def rel(*parts):
-    '''returns the relative path to a file wrt to the current directory'''
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), *parts))
-
-with open("README.md", "r", encoding="utf-8") as f:
-    README = f.read()
-
-with open(rel('webpack_loader', '__init__.py')) as handler:
-    INIT_PY = handler.read()
+HERE = os.path.abspath(os.path.dirname(__file__))
+NAME = os.path.basename(HERE)
 
 
-VERSION = re.findall("__version__ = '([^']+)'", INIT_PY)[0]
+def read(*parts):
+    with open(os.path.join(HERE, *parts), "r", encoding="utf-8") as fp:
+        return fp.read()
+
+
+def find_version(*file_paths):
+    version_file = read(*file_paths)
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
 
 setup(
-  name = 'django-webpack-loader',
-  packages = ['webpack_loader', 'webpack_loader/templatetags', 'webpack_loader/contrib'],
-  version = VERSION,
-  description = 'Transparently use webpack with django',
-  long_description=README,
-  long_description_content_type="text/markdown",
-  author = 'Owais Lone',
-  author_email = 'hello@owaislone.org',
-  download_url = 'https://github.com/owais/django-webpack-loader/tarball/{0}'.format(VERSION),
-  url = 'https://github.com/owais/django-webpack-loader', # use the URL to the github repo
-  install_requires = [
-    "requests",
-  ],
-  keywords = ['django', 'webpack', 'assets'], # arbitrary keywords
-  classifiers = [
-    'Programming Language :: Python :: 2.6',
-    'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3.3',
-    'Programming Language :: Python :: 3.4',
-    'Programming Language :: Python :: 3.5',
-    'Framework :: Django',
-    'Environment :: Web Environment',
-    'License :: OSI Approved :: MIT License',
-  ],
+    name=NAME,
+    version=find_version("src", NAME, "__init__.py"),
+    description="Load webpack stats from a local or remote file",
+    long_description=read("README.md"),
+    long_description_content_type="text/markdown",
+    url="https://github.com/alexseitsinger/{}".format(NAME),
+    author="Alex Seitsinger",
+    author_email="contact@alexseitsinger.com",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        'Framework :: Django',
+        "License :: OSI Approved :: BSD License",
+    ],
+    package_dir={"": "src"},
+    packages=find_packages("src", exclude=["tests"]),
+    license="BSD 2-Clause License",
+    install_requires=["requests"],
+    include_package_data=True
 )
