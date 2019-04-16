@@ -20,9 +20,9 @@ def webpack_cfg_check(*args, **kwargs):
     return errors
 
 
-class WebpackLoaderConfig(AppConfig):
-    name = 'webpack_loader'
-    verbose_name = "Webpack Loader"
+class WebpackLoaderRemoteConfig(AppConfig):
+    name = 'webpack_loader_remote'
+    verbose_name = "Webpack Loader Remote"
 
     def ready(self):
         from django.core.checks import register, Tags
