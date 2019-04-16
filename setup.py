@@ -36,7 +36,7 @@ setup(
     author_email="contact@alexseitsinger.com",
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["tests"]),
-    license="BSD 2-Clause License",
+    license="MIT License",
     install_requires=["requests"],
     include_package_data=True
 )
