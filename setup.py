@@ -36,7 +36,14 @@ setup(
     author_email="contact@alexseitsinger.com",
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["tests"]),
-    license="MIT License",
     install_requires=["requests"],
-    include_package_data=True
+    include_package_data=True,
+    license="MIT License",
+    keywords=["django", "webpack"],
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "Framework :: Django",
+        "Environment :: Web Environment",
+        "License :: OSI Approved :: MIT License",
+    ],
 )
