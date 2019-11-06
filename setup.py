@@ -4,8 +4,8 @@ import os
 import re
 from setuptools import setup, find_packages
 
-PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
-PACKAGE_NAME = os.path.basename(PACKAGE_DIR)
+PACKAGE_DIR = "django-webpack-loader-remote"
+PACKAGE_NAME = "webpack_loader_remote"
 
 
 def read_file(*parts):
@@ -18,7 +18,7 @@ def get_version():
     match = re.search(
         r"^__version__ = ['\"]([^'\"]*)['\"]",
         read_file("src", PACKAGE_NAME, "__init__.py"),
-        re.M
+        re.M,
     )
     if match:
         return match.group(1)
