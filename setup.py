@@ -4,7 +4,7 @@ import os
 import re
 from setuptools import setup, find_packages
 
-PACKAGE_DIR = "django-webpack-loader-remote"
+PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 PACKAGE_NAME = "webpack_loader_remote"
 
 
