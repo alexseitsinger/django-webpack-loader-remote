@@ -41,38 +41,25 @@ def link_tag(href, attrs):
 
 
 def get_presigned_url(
-    file_name,
-    bucket_name,
-    prefix=None,
-    expiration=3600,
-    access_key=None,
-    secret_key=None,
-    config_name="DEFAULT",
+    file_name, bucket_name, prefix=None, expiration=3600, config_name="DEFAULT"
 ):
-    if access_key is None and secret_key is None:
-        loader = get_loader(config_name)
-        access_key = loader.config["AWS_ACCESS_KEY"]
-        secret_key = loader.config["AWS_SECRET_KEY"]
+    loader = get_loader(config_name)
+    access_key = loader.config["AWS_ACCESS_KEY"]
+    secret_key = loader.config["AWS_SECRET_KEY"]
 
     client = boto3.client(
         "s3", aws_access_key_id=access_key, aws_secret_access_key=secret_key
     )
 
-    if prefix is None:
-        object_name = file_name
-    else:
+    object_name = file_name
+    if prefix is not None:
         object_name = "{}/{}".format(prefix, file_name)
 
-    try:
-        return client.generate_presigned_url(
-            "get_object",
-            Params={"Bucket": bucket_name, "Key": object_name},
-            ExpiresIn=expiration,
-        )
-
-    except boto3.ClientError as exc:
-        logging.error(exc)
-        return None
+    return client.generate_presigned_url(
+        "get_object",
+        Params={"Bucket": bucket_name, "Key": object_name},
+        ExpiresIn=expiration,
+    )
 
 
 def get_as_presigned_tags(
