@@ -1,11 +1,5 @@
 # Webpack Loader Remote
 
-Fork of Django Webpack Loader. Load webpack stats from a local or remote file.
+## Description
 
-## Install
-
-```pip install webpack_loader_remote```
-
-or
-
-```pipenv install webpack_loader_remote```
+Load webpack assets from a local or remote stats file.
