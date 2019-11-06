@@ -8,7 +8,7 @@ def webpack_cfg_check(*args, **kwargs):
     from django.conf import settings
 
     check_failed = False
-    user_config = getattr(settings, 'WEBPACK_LOADER', {})
+    user_config = getattr(settings, 'WEBPACK_LOADER_REMOTE', {})
     try:
         user_config = [dict({}, **cfg) for cfg in user_config.values()]
     except TypeError:

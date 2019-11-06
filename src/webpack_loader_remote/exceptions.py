@@ -1,36 +1,36 @@
 __all__ = (
-    'WebpackError',
-    'WebpackLoaderBadStatsError',
-    'WebpackLoaderTimeoutError',
-    'WebpackBundleLookupError'
+    "WebpackError",
+    "WebpackLoaderRemoteBadStatsError",
+    "WebpackLoaderRemoteTimeoutError",
+    "WebpackBundleLookupError",
 )
 
 
-class BaseWebpackLoaderException(Exception):
+class BaseWebpackLoaderRemoteException(Exception):
     """
-    Base exception for django-webpack-loader.
+    Base exception for django-webpack-loader-remote.
     """
 
 
-class WebpackError(BaseWebpackLoaderException):
+class WebpackError(BaseWebpackLoaderRemoteException):
     """
     General webpack loader error.
     """
 
 
-class WebpackLoaderBadStatsError(BaseWebpackLoaderException):
+class WebpackLoaderRemoteBadStatsError(BaseWebpackLoaderRemoteException):
     """
     The stats file does not contain valid data.
     """
 
 
-class WebpackLoaderTimeoutError(BaseWebpackLoaderException):
+class WebpackLoaderRemoteTimeoutError(BaseWebpackLoaderRemoteException):
     """
     The bundle took too long to compile.
     """
 
 
-class WebpackBundleLookupError(BaseWebpackLoaderException):
+class WebpackBundleLookupError(BaseWebpackLoaderRemoteException):
     """
     The bundle name was invalid.
     """

@@ -8,14 +8,14 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 
 from .exceptions import (
     WebpackError,
-    WebpackLoaderBadStatsError,
-    WebpackLoaderTimeoutError,
+    WebpackLoaderRemoteBadStatsError,
+    WebpackLoaderRemoteTimeoutError,
     WebpackBundleLookupError,
 )
 from .config import load_config
 
 
-class WebpackLoader(object):
+class WebpackLoaderRemote(object):
     _assets = {}
 
     def __init__(self, name="DEFAULT"):
@@ -92,7 +92,7 @@ class WebpackLoader(object):
                 assets = self.get_assets()
 
             if timed_out:
-                raise WebpackLoaderTimeoutError(
+                raise WebpackLoaderRemoteTimeoutError(
                     "Timed Out. Bundle `{0}` took more than {1} seconds "
                     "to compile.".format(bundle_name, timeout)
                 )
@@ -120,7 +120,7 @@ class WebpackLoader(object):
             )
             raise WebpackError(error)
 
-        raise WebpackLoaderBadStatsError(
+        raise WebpackLoaderRemoteBadStatsError(
             "The stats file does not contain valid data. Make sure "
             "webpack-bundle-tracker plugin is enabled and try to run "
             "webpack again."
