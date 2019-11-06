@@ -1,49 +1,47 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-import os
-import re
 from setuptools import setup, find_packages
+from setup_utils import read, read_markdown
 
-PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
-PACKAGE_NAME = "webpack_loader_remote"
-
-
-def read_file(*parts):
-    file_path = os.path.join(PACKAGE_DIR, *parts)
-    with open(file_path, "r", encoding="utf-8") as file:
-        return file.read()
-
-
-def get_version():
-    match = re.search(
-        r"^__version__ = ['\"]([^'\"]*)['\"]",
-        read_file("src", PACKAGE_NAME, "__init__.py"),
-        re.M,
-    )
-    if match:
-        return match.group(1)
-    raise RuntimeError("Unable to find version.")
-
+PACKAGE_NAME = "django-webpack-loader-remote"
+PACKAGE_SOURCE_DIR = "webpack_loader_remote"
+GITHUB_URL = "https://github.com/alexseitsinger/{}".format(PACKAGE_NAME)
+HOMEPAGE_URL = GITHUB_URL
+README_NAME = "README.md"
+INSTALL_REQUIRES = ["Django", "boto3", "requests"]
+KEYWORDS = ["django", "webpack"]
+CLASSIFIERS = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 2",
+    "Programming Language :: Python :: 3",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System",
+]
 
 setup(
     name=PACKAGE_NAME,
-    version=get_version(),
-    description="Load webpack stats from a local or remote file",
-    long_description=read_file("README.md"),
+    version=read(("src", PACKAGE_SOURCE_DIR, "__init__.py"), "__version__"),
+    description=read_markdown((README_NAME,), "Description", (0,)),
+    long_description=read((README_NAME,)),
     long_description_content_type="text/markdown",
-    url="https://github.com/alexseitsinger/{}".format(PACKAGE_NAME),
     author="Alex Seitsinger",
-    author_email="contact@alexseitsinger.com",
+    author_email="software@alexseitsinger.com",
+    url=HOMEPAGE_URL,
+    install_required=INSTALL_REQUIRES,
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["tests"]),
-    install_requires=["requests"],
     include_package_data=True,
-    license="MIT License",
-    keywords=["django", "webpack"],
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "Framework :: Django",
-        "Environment :: Web Environment",
-        "License :: OSI Approved :: MIT License",
-    ],
+    license="BSD 2-Clause License",
+    keywords=KEYWORDS,
+    classifiers=CLASSIFIERS,
+    project_urls={
+        "Documentation": HOMEPAGE_URL,
+        "Source": GITHUB_URL,
+        "Tracker": "{}/issues".format(GITHUB_URL),
+    },
 )
