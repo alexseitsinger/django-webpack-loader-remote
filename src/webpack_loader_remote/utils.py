@@ -1,5 +1,6 @@
 import logging
 import boto3
+from botocore.client import Config
 from django.conf import settings
 
 from .loader import WebpackLoaderRemote
@@ -48,7 +49,10 @@ def get_presigned_url(
     secret_key = loader.config["AWS_SECRET_KEY"]
 
     client = boto3.client(
-        "s3", aws_access_key_id=access_key, aws_secret_access_key=secret_key
+        "s3",
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        config=Config(signature_version="s3v4"),
     )
 
     object_name = file_name
