@@ -34,3 +34,8 @@ class WebpackBundleLookupError(BaseWebpackLoaderRemoteException):
     """
     The bundle name was invalid.
     """
+
+class PresignedURLKeysMissing(BaseWebpackLoaderRemoteException):
+    """
+    The AWS keys were not found.
+    """

@@ -24,15 +24,13 @@ class WebpackLoaderRemote(object):
 
     def _load_assets(self):
         stats_file = self.config["STATS_FILE"]
+
         if stats_file.startswith(("http://", "https://")):
             timeout = float(self.config["STATS_FILE_TIMEOUT"])
-            header_name = self.config["STATS_FILE_SECRET_KEY_HEADER_NAME"]
+            headers = self.config["STATS_FILE_HEADERS"]
+
             try:
-                response = requests.get(
-                    stats_file,
-                    timeout=timeout,
-                    headers={header_name: self.config["STATS_FILE_SECRET_KEY"]},
-                )
+                response = requests.get(stats_file, timeout=timeout, headers=headers)
                 status_code = response.status_code
                 if status_code != 200:
                     raise requests.HTTPError(

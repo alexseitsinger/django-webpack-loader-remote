@@ -4,6 +4,7 @@ from botocore.client import Config
 from django.conf import settings
 
 from .loader import WebpackLoaderRemote
+from .exceptions import PresignedURLKeysMissing
 
 _loaders = {}
 
@@ -42,11 +43,16 @@ def link_tag(href, attrs):
 
 
 def get_presigned_url(
-    file_name, bucket_name, prefix=None, expiration=None, config_name="DEFAULT"
+    object_name, bucket_name, prefix=None, expiration=None, config_name="DEFAULT"
 ):
     loader = get_loader(config_name)
-    access_key = loader.config["AWS_ACCESS_KEY"]
-    secret_key = loader.config["AWS_SECRET_KEY"]
+    access_key = loader.config["PRESIGNED_URL_ACCESS_KEY_ID"]
+    secret_key = loader.config["PRESIGNED_URL_SECRET_ACCESS_KEY"]
+
+    if access_key is None and secret_key is None:
+        raise PresignedURLKeysMissing(
+            "Can't create presigned url without an access and secret key."
+        )
 
     client = boto3.client(
         "s3",
@@ -55,9 +61,8 @@ def get_presigned_url(
         config=Config(signature_version="s3v4"),
     )
 
-    object_name = file_name
     if prefix is not None:
-        object_name = "{}/{}".format(prefix, file_name)
+        object_name = "{}/{}".format(prefix, object_name)
 
     return client.generate_presigned_url(
         "get_object",
@@ -76,18 +81,15 @@ def get_as_presigned_tags(
     attrs="",
 ):
     bundle = _get_bundle(bundle_name, extension, config)
-
     tags = []
 
     for chunk in bundle:
-        file_name = chunk["name"]
-        presigned_url = get_presigned_url(
-            file_name, bucket_name, prefix, expiration, config
-        )
+        name = chunk["name"]
+        presigned_url = get_presigned_url(name, bucket_name, prefix, expiration, config)
 
-        if file_name.endswith((".js", ".js.gz")):
+        if name.endswith((".js", ".js.gz")):
             tags.append(script_tag(presigned_url, attrs))
-        elif file_name.endswith((".css", ".css.gz")):
+        elif name.endswith((".css", ".css.gz")):
             tags.append(link_tag(presigned_url, attrs))
 
     return tags
@@ -106,19 +108,16 @@ def get_as_tags(bundle_name, extension=None, config="DEFAULT", attrs=""):
 
     bundle = _get_bundle(bundle_name, extension, config)
     tags = []
+
     for chunk in bundle:
-        if chunk["name"].endswith((".js", ".js.gz")):
-            tags.append(
-                ('<script type="text/javascript" src="{0}" {1}></script>').format(
-                    chunk["url"], attrs
-                )
-            )
-        elif chunk["name"].endswith((".css", ".css.gz")):
-            tags.append(
-                ('<link type="text/css" href="{0}" rel="stylesheet" {1}/>').format(
-                    chunk["url"], attrs
-                )
-            )
+        name = chunk["name"]
+        url = chunk["url"]
+
+        if name.endswith((".js", ".js.gz")):
+            tags.append(script_tag(url, attrs))
+        elif name.endswith((".css", ".css.gz")):
+            tags.append(link_tag(url, attrs))
+
     return tags
 
 
