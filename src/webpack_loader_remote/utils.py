@@ -42,7 +42,7 @@ def link_tag(href, attrs):
 
 
 def get_presigned_url(
-    file_name, bucket_name, prefix=None, expiration=3600, config_name="DEFAULT"
+    file_name, bucket_name, prefix=None, expiration=None, config_name="DEFAULT"
 ):
     loader = get_loader(config_name)
     access_key = loader.config["AWS_ACCESS_KEY"]
