@@ -1,3 +1,10 @@
+<a name="v1.1.1"></a>
+## [v1.1.1](https://github.com/alexseitsinger/django-webpack-loader-remote/compare/v1.1.0...v1.1.1) (2019-11-07)
+
+### Code Refactoring
+- Changes utils. ([6f1ed53](https://github.com/alexseitsinger/django-webpack-loader-remote/commit/6f1ed5338327b6e96d51b12aef92da4c5afadc48))
+
+
 <a name="v1.1.0"></a>
 ## [v1.1.0](https://github.com/alexseitsinger/django-webpack-loader-remote/compare/v1.0.0...v1.1.0) (2019-11-06)
 
