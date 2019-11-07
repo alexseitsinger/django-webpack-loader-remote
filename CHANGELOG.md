@@ -1,3 +1,10 @@
+<a name="v1.1.2"></a>
+## [v1.1.2](https://github.com/alexseitsinger/django-webpack-loader-remote/compare/v1.1.1...v1.1.2) (2019-11-07)
+
+### Bug Fixes
+- Removes default expiration. ([04a979e](https://github.com/alexseitsinger/django-webpack-loader-remote/commit/04a979e475a4f595620a899cdf7bed674303bc67))
+
+
 <a name="v1.1.1"></a>
 ## [v1.1.1](https://github.com/alexseitsinger/django-webpack-loader-remote/compare/v1.1.0...v1.1.1) (2019-11-07)
 
