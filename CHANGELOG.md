@@ -1,3 +1,10 @@
+<a name="v2.0.0"></a>
+## [v2.0.0](https://github.com/alexseitsinger/django-webpack-loader-remote/compare/v1.1.2...v2.0.0) (2019-11-07)
+
+### Features
+- Changes settings names. ([e07b2d7](https://github.com/alexseitsinger/django-webpack-loader-remote/commit/e07b2d7a9b5896860ea12cfc44c3243d4d1dc7de))
+
+
 <a name="v1.1.2"></a>
 ## [v1.1.2](https://github.com/alexseitsinger/django-webpack-loader-remote/compare/v1.1.1...v1.1.2) (2019-11-07)
 
